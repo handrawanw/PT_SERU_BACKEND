@@ -5,15 +5,12 @@
 exports.up = function(knex) {
   return knex.schema.createTableIfNotExists("users",function(table){
     table.bigIncrements();
-    table.text("username").defaultTo(null);
-    table.string("email",64).defaultTo(null);
+    table.text("name").defaultTo(null);
+    table.string("username",64).defaultTo(null);
     table.text("password").defaultTo(null);
-    table.text("pictures").defaultTo(null);
-    table.boolean("verified").defaultTo(false);
-    table.timestamp("birthday").defaultTo(null);
-    table.smallint("gender").defaultTo(null);
     table.timestamp("created_at").defaultTo(knex.fn.now());
     table.timestamp("updated_at").defaultTo(knex.fn.now());
+    table.smallint("is_admin").defaultTo(0);
     table.smallint("is_deleted").defaultTo(0);
   })
 };
