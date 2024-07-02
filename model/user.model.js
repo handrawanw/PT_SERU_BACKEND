@@ -2,10 +2,26 @@ const knex=require("../database/knex");
 
 module.exports={
 
-    init:async()=>{
+    getAccount:async({id,username})=>{
         let query=knex.select("*").from("user");
 
-        return query;
+        if(id){
+            query.where("id",id);
+        }
+
+        if(username){
+            query.where("username",username);
+        }
+
+        return query.first();
+    },
+
+    createAccount:async({name,username,password})=>{
+        return knex("user").insert({name,username,password});
+    },
+
+    updatePassword: async ({ user_id, password }) => {
+        await knex('user').update({ password }).where({ 'id': user_id });
     }
 
 };

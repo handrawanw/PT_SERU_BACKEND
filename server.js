@@ -59,7 +59,7 @@ app.use(morgan("dev"))
 
 const server=http.createServer(app);
 const IO=new Server(server,{
-    path:"/realtime",
+    path:"/seru",
     allowEIO3: true,
     cors: {
         origin: ["*"],
@@ -84,7 +84,6 @@ IO.on("connection",(socket)=>{
   socket.on('disconnect', () => {
       console.log("Client disconnected ",socket.id);
   });
-
 });
 
 app.use((req,res,next)=>{
@@ -99,7 +98,7 @@ const options = {
   definition: {
     openapi: "3.1.0",
     info: {
-      title: "66Engine Express API with Swagger",
+      title: "Express API with Swagger",
       version: "0.1.0",
       description:
         "This is API documentation created with Express and documented with Swagger",
@@ -157,6 +156,7 @@ app.use(
 );
 
 app.use("/",require("./routes/index"));
+app.use("/",require("./middleware/error_handler"));
 
 server.listen(PORT,(err)=>{
   if(err) throw err;

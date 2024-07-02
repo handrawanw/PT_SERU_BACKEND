@@ -1,5 +1,5 @@
 
-// user.js
+// vehicle_year.js
 
 /**
  * @swagger
@@ -69,7 +69,20 @@
  *                  example: true
  *                message:
  *                  type: string
- *                  example: "Username or Password not match! | Password and Username not match!"
+ *                  example: "Agent Unauthorized | Password doesn't match"
+ *         404:
+ *           description: Not found Account
+ *           content:
+ *             application/json:
+ *               schema:
+ *                type: object
+ *                properties:
+ *                 status:
+ *                  type: boolean
+ *                  example: false
+ *                 message:
+ *                  type: string
+ *                  example: "Account tidak terdaftar"
  *         500:
  *           description: Internal server error
  *           content:

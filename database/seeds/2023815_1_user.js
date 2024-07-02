@@ -13,7 +13,7 @@ exports.seed = async function(knex) {
     await knex('users').insert([
       {
         id:1,
-        email:"admin@gmail.com",
+        name:"superadmin",
         username:"admin",
         password:hashing.hashPass("admin#@!")
       }

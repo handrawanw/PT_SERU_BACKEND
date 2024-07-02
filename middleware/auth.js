@@ -13,10 +13,6 @@ module.exports = {
         let token = authorization.replace("Basic ", "");
         token = token.replace("Bearer ", "");
         verifytoken(token, async(err, payload) => {
-            // await m_log_trace.createLogTrace({
-            //     name:"log token",
-            //     description:`${token} ? ${err}`
-            // });
             // console.log(payload);
             if (err) {
                 return response.unauthorized({

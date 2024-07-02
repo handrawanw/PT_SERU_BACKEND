@@ -8,11 +8,11 @@ module.exports = {
                 // console.log(schema.validate(field).error.details);
                 let list_error=schema.validate(field).error.details;
                 if(list_error.length>0){
-                    list_error=list_error.map((item)=>({'message':item.message,'key':item.context.key}));
+                    list_error=list_error.map((item)=>({'message':item.message,'code':'1350'}));
                 }
                 return response.bad({
                     validate:true,
-                    error:list_error
+                    error:list_error[0]
                 },res);
             }
             next();
@@ -25,11 +25,11 @@ module.exports = {
                 // console.log(schema.validate(field).error.details);
                 let list_error=schema.validate(field).error.details;
                 if(list_error.length>0){
-                    list_error=list_error.map((item)=>({'message':item.message,'key':item.context.key}));
+                    list_error=list_error.map((item)=>({'message':item.message,'code':'1350'}));
                 }
                 return response.bad({
                     validate:true,
-                    error:list_error
+                    error:list_error[0]
                 },res);
             }
             next();
@@ -42,11 +42,11 @@ module.exports = {
                 // console.log(schema.validate(field).error.details);
                 let list_error=schema.validate(field).error.details;
                 if(list_error.length>0){
-                    list_error=list_error.map((item)=>({'message':item.message,'key':item.context.key}));
+                    list_error=list_error.map((item)=>({'message':item.message,'code':'1350'}));
                 }
                 return response.bad({
                     validate:true,
-                    error:list_error
+                    error:list_error[0]
                 },res);
             }
             next();
@@ -59,11 +59,11 @@ module.exports = {
                 // console.log(schema.validate(field).error.details);
                 let list_error=schema.validate(field).error.details;
                 if(list_error.length>0){
-                    list_error=list_error.map((item)=>({'message':item.message,'key':item.context.key}));
+                    list_error=list_error.map((item)=>({'message':item.message,'code':'1350'}));
                 }
                 return response.bad({
                     validate:true,
-                    error:list_error
+                    error:list_error[0]
                 },res);
             }
             next();

@@ -4,7 +4,7 @@
  */
 exports.up = function(knex) {
   return knex.schema.createTableIfNotExists("users",function(table){
-    table.bigIncrements();
+    table.increments();
     table.text("name").defaultTo(null);
     table.string("username",64).defaultTo(null);
     table.text("password").defaultTo(null);
