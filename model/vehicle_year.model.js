@@ -8,7 +8,7 @@ module.exports = {
     try {
       let offset = query_helper.parsePageToOffset({page, limit});
 
-      let query = knex("vehicle_brand").select("*");
+      let query = knex("vehicle_year").select("*");
 
       if (limit && limit != "all") {
         query.offset(offset);
@@ -41,7 +41,7 @@ module.exports = {
 
   createVYear: async ({ name }) => {
     try {
-      let data = await knex("vehicle_brand").insert({
+      let data = await knex("vehicle_year").insert({
         name,
       });
 
@@ -54,7 +54,7 @@ module.exports = {
 
   updateVYear: async ({ id, name }) => {
     try {
-      let data = await knex("vehicle_brand").where({ id }).update({ name });
+      let data = await knex("vehicle_year").where({ id }).update({ name });
 
       return data;
     } catch (error) {
@@ -65,7 +65,7 @@ module.exports = {
 
   deleteVYear: async ({ id }) => {
     try {
-      let data = await knex("vehicle_brand").where({ id }).del();
+      let data = await knex("vehicle_year").where({ id }).del();
 
       return data;
     } catch (error) {

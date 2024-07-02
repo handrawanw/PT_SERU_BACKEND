@@ -1,14 +1,16 @@
 const Joi=require("joi");
 
 module.exports = {
-    getAllVYear: Joi.object({
+    getAllType: Joi.object({
         limit: Joi.number().optional(),
         page: Joi.number().optional(),
     }),
-    createVYear: Joi.object({
-        year: Joi.string().required(),
+    createType: Joi.object({
+        name: Joi.string().required(),
+        brand_id: Joi.number().required(),
     }),
-    updateVYear: Joi.object({
-        year: Joi.string().required(),
+    updateType: Joi.object({
+        name: Joi.string().optional(),
+        brand_id: Joi.number().optional(),
     }),
 }

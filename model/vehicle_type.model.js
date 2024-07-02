@@ -8,7 +8,7 @@ module.exports = {
     try {
       let offset = query_helper.parsePageToOffset({page, limit});
 
-      let query = knex("vehicle_brand").select("*");
+      let query = knex("vehicle_type").select("*");
 
       if (limit && limit != "all") {
         query.offset(offset);
@@ -39,10 +39,10 @@ module.exports = {
     }
   },
 
-  createType: async ({ name }) => {
+  createType: async ({ name, brand_id}) => {
     try {
-      let data = await knex("vehicle_brand").insert({
-        name,
+      let data = await knex("vehicle_type").insert({
+        name, vehicle_brand_id:brand_id
       });
 
       return data;
@@ -52,9 +52,9 @@ module.exports = {
     }
   },
 
-  updateType: async ({ id, name }) => {
+  updateType: async ({ id, name, brand_id }) => {
     try {
-      let data = await knex("vehicle_brand").where({ id }).update({ name });
+      let data = await knex("vehicle_type").where({ id }).update({ name, vehicle_brand_id : brand_id });
 
       return data;
     } catch (error) {
@@ -65,7 +65,7 @@ module.exports = {
 
   deleteType: async ({ id }) => {
     try {
-      let data = await knex("vehicle_brand").where({ id }).del();
+      let data = await knex("vehicle_type").where({ id }).del();
 
       return data;
     } catch (error) {

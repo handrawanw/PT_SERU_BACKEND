@@ -9,6 +9,6 @@ module.exports = {
         name: Joi.string().required(),
     }),
     updateBrand: Joi.object({
-        name: Joi.string().required(),
+        name: Joi.string().optional(),
     }),
 }
