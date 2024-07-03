@@ -68,7 +68,7 @@ module.exports = {
       let data = await vehicle_model.getModelById({ hash: id });
 
       if (data) {
-        data = data ? data[0] : {};
+        data = data ? data : {};
         return response.ok({ data }, res);
       } else {
         return response.error(
@@ -205,21 +205,41 @@ module.exports = {
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
-        return response.error(
-          {
-            code: "9998",
-            message: error.message,
-          },
-          res
-        );
+        if(error.hasOwnProperty("code")&&error.code == "23503"){
+          return response.error(
+            {
+              code: "4046",
+              message: "Data cannot be deleted because it is used in other tables",
+            },
+            res
+          );
+        }else{
+          return response.error(
+            {
+              code: "9998",
+              message: error.message,
+            },
+            res
+          );
+        }
       } else {
-        return response.error(
-          {
-            code: "9999",
-            message: "Ops... we have a problem, please try again later!",
-          },
-          res
-        );
+        if(error.hasOwnProperty("code")&&error.code == "23503"){
+          return response.error(
+            {
+              code: "4046",
+              message: "Data cannot be deleted because it is used in other tables",
+            },
+            res
+          );
+        }else{
+          return response.error(
+            {
+              code: "9999",
+              message: "Ops... we have a problem, please try again later!",
+            },
+            res
+          );
+        }
       }
     }
   },

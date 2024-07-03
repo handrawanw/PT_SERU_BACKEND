@@ -62,6 +62,45 @@ module.exports = {
     }
   },
 
+  getYearById: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+      let data = await vehicle_year_model.getYearById({ hash: id });
+
+      if (data) {
+        data = data ? data : {};
+        return response.ok({ data }, res);
+      } else {
+        return response.notFound(
+          {
+            code: "4045",
+            message: "Model not found",
+          },
+          res
+        );
+      }
+    } catch (error) {
+      console.log(error.stack);
+      if (process.env.NODE_ENV === "development") {
+        return response.error(
+          {
+            code: "9998",
+            message: error.message,
+          },
+          res
+        );
+      } else {
+        return response.error(
+          {
+            code: "9999",
+            message: "Ops... we have a problem, please try again later!",
+          },
+          res
+        );
+      }
+    }
+  },
+
   createVYear: async (req, res, next) => {
     try {
       let { year } = req.body;
@@ -162,21 +201,41 @@ module.exports = {
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
-        return response.error(
-          {
-            code: "9998",
-            message: error.message,
-          },
-          res
-        );
+        if(error.hasOwnProperty("code")&&error.code == "23503"){
+          return response.error(
+            {
+              code: "4046",
+              message: "Data cannot be deleted because it is used in other tables",
+            },
+            res
+          );
+        }else{
+          return response.error(
+            {
+              code: "9998",
+              message: error.message,
+            },
+            res
+          );
+        }
       } else {
-        return response.error(
-          {
-            code: "9999",
-            message: "Ops... we have a problem, please try again later!",
-          },
-          res
-        );
+        if(error.hasOwnProperty("code")&&error.code == "23503"){
+          return response.error(
+            {
+              code: "4046",
+              message: "Data cannot be deleted because it is used in other tables",
+            },
+            res
+          );
+        }else{
+          return response.error(
+            {
+              code: "9999",
+              message: "Ops... we have a problem, please try again later!",
+            },
+            res
+          );
+        }
       }
     }
   },

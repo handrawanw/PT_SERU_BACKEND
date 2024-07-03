@@ -230,25 +230,57 @@ module.exports = {
       let { id } = req.params;
       let data = await pricelist_model.deletePriceList({ id });
 
-      return response.ok(data, res);
+      if(data.length==0){
+        return response.error(
+          {
+            code: "4008",
+            message: "Data not found",
+          },
+          res
+        );
+      }else{
+        data = data ? data[0] : {};
+        return response.ok(data, res);
+      }
+
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
-        return response.error(
-          {
-            code: "9998",
-            message: error.message,
-          },
-          res
-        );
+        if(error.hasOwnProperty("code")&&error.code == "23503"){
+          return response.error(
+            {
+              code: "4046",
+              message: "Data cannot be deleted because it is used in other tables",
+            },
+            res
+          );
+        }else{
+          return response.error(
+            {
+              code: "9998",
+              message: error.message,
+            },
+            res
+          );
+        }
       } else {
-        return response.error(
-          {
-            code: "9999",
-            message: "Ops... we have a problem, please try again later!",
-          },
-          res
-        );
+        if(error.hasOwnProperty("code")&&error.code == "23503"){
+          return response.error(
+            {
+              code: "4046",
+              message: "Data cannot be deleted because it is used in other tables",
+            },
+            res
+          );
+        }else{
+          return response.error(
+            {
+              code: "9999",
+              message: "Ops... we have a problem, please try again later!",
+            },
+            res
+          );
+        }
       }
     }
   },

@@ -1,6 +1,8 @@
 const vehicle_brand_model = require("../model/vehicle_brand.model.js");
 const response = require("../helper/response");
 
+const hashing = require("../helper/hashing");
+
 module.exports = {
   getAllBrand: async (req, res, next) => {
     try {
@@ -66,11 +68,12 @@ module.exports = {
     try {
       let { name } = req.body;
       let data = await vehicle_brand_model.createBrand({ name });
+      data = []
       if (data.length == 0) {
-        return response.error(
+        return response.notFound(
           {
             code: "4046",
-            message: "Data not found",
+            message: "Brand failed to create",
           },
           res
         );
@@ -218,21 +221,41 @@ module.exports = {
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
-        return response.error(
-          {
-            code: "9998",
-            message: error.message,
-          },
-          res
-        );
+        if(error.hasOwnProperty("code")&&error.code == "23503"){
+          return response.error(
+            {
+              code: "4046",
+              message: "Data cannot be deleted because it is used in other tables",
+            },
+            res
+          );
+        }else{
+          return response.error(
+            {
+              code: "9998",
+              message: error.message,
+            },
+            res
+          );
+        }
       } else {
-        return response.error(
-          {
-            code: "9999",
-            message: "Ops... we have a problem, please try again later!",
-          },
-          res
-        );
+        if(error.hasOwnProperty("code")&&error.code == "23503"){
+          return response.error(
+            {
+              code: "4046",
+              message: "Data cannot be deleted because it is used in other tables",
+            },
+            res
+          );
+        }else{
+          return response.error(
+            {
+              code: "9999",
+              message: "Ops... we have a problem, please try again later!",
+            },
+            res
+          );
+        }
       }
     }
   },
