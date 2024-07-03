@@ -1,4 +1,6 @@
 const pricelist_model = require("../model/pricelist.model.js");
+const vehicle_year_model = require("../model/vehicle_year.model.js");
+const vehicle_model_model = require("../model/vehicle_model.model.js");
 const response = require("../helper/response");
 
 module.exports = {
@@ -38,13 +40,41 @@ module.exports = {
 
       let codePL = await pricelist_model.codePL();
 
+      let checkVehicleYear = await vehicle_year_model.getYearById({
+        id: vehicle_year_id,
+      });
+
+      if (!checkVehicleYear) {
+        return response.error(
+          {
+            code: "4004",
+            message: "Vehicle year not found",
+          },
+          res
+        );
+      }
+
+      let checkVehicleModel = await vehicle_model_model.getModelById({
+        id: vehicle_model_id,
+      });
+
+      if (!checkVehicleModel) {
+        return response.error(
+          {
+            code: "4005",
+            message: "Vehicle model not found",
+          },
+          res
+        );
+      }
+
       let data = await pricelist_model.createPriceList({
         code: codePL,
         price,
         vehicle_year_id,
-        vehicle_model_id
+        vehicle_model_id,
       });
-      
+
       return response.ok(data, res);
     } catch (error) {
       console.log(error.stack);
@@ -78,6 +108,37 @@ module.exports = {
       if (price) payload.price = price;
       if (vehicle_year_id) payload.vehicle_year_id = vehicle_year_id;
       if (vehicle_model_id) payload.vehicle_model_id = vehicle_model_id;
+      if (vehicle_year_id) {
+        let checkVehicleYear = await vehicle_year_model.getYearById({
+          id: vehicle_year_id,
+        });
+
+        if (!checkVehicleYear) {
+          return response.error(
+            {
+              code: "4004",
+              message: "Vehicle year not found",
+            },
+            res
+          );
+        }
+      }
+
+      if (vehicle_model_id) {
+        let checkVehicleModel = await vehicle_model_model.getModelById({
+          id: vehicle_model_id,
+        });
+
+        if (!checkVehicleModel) {
+          return response.error(
+            {
+              code: "4005",
+              message: "Vehicle model not found",
+            },
+            res
+          );
+        }
+      }
 
       let data = await pricelist_model.updatePriceList({ id, ...payload });
 

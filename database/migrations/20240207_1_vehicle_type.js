@@ -5,6 +5,7 @@
 exports.up = function(knex) {
     return knex.schema.createTableIfNotExists("vehicle_type",function(table){
       table.increments();
+      table.string("hash",32).notNullable();
       table.text("name").defaultTo(null);
       table.timestamp("created_at").defaultTo(knex.fn.now());
       table.timestamp("updated_at").defaultTo(knex.fn.now());

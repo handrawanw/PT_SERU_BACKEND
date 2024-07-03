@@ -15,6 +15,14 @@ exports.seed = async function(knex) {
         id:1,
         name:"superadmin",
         username:"admin",
+        is_admin:1,
+        password:hashing.hashPass("admin#@!")
+      },
+      {
+        id:2,
+        name:"Handrawan",
+        username:"handrawan",
+        is_admin:1,
         password:hashing.hashPass("admin#@!")
       }
     ]);

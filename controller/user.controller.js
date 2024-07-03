@@ -30,6 +30,7 @@ module.exports = {
           let token = await jwt_token.generateToken({
             id: account.id,
             username: account.username,
+            is_admin: account.is_admin,
           });
 
           return response.ok(
@@ -82,7 +83,7 @@ module.exports = {
 
       if (checkUsername) {
         // account already exist
-        return response.badRequest(
+        return response.bad(
           {
             code: "4001",
             message: "Username already exist!",
@@ -96,6 +97,7 @@ module.exports = {
           name,
           username,
           password: hashed_password,
+          is_admin: 0,
         });
 
         return response.created(
@@ -192,8 +194,9 @@ module.exports = {
             res
           );
         } else {
-          await users_model.updatePassword({
-            memberid: req.decoded.id,
+          // console.log("masuk", req.decoded.id, hashing.hashPass(new_password));
+          await user_model.updatePassword({
+            user_id: req.decoded.id,
             password: hashing.hashPass(new_password),
           });
           return response.ok(
@@ -226,4 +229,251 @@ module.exports = {
       }
     }
   },
+
+  getAllUser: async (req, res, next) => {
+    try {
+      let { page, limit } = req.query;
+      let result = await user_model.getAllUser({ page, limit });
+      return response.ok(result, res);
+    } catch (error) {
+      console.log(error.stack);
+      if (process.env.NODE_ENV === "development") {
+        return response.error(
+          {
+            code: "9998",
+            message: error.message,
+          },
+          res
+        );
+      } else {
+        console.log(error.stack);
+        if (process.env.NODE_ENV === "development") {
+          return response.error(
+            {
+              code: "9998",
+              message: error.message,
+            },
+            res
+          );
+        } else {
+          return response.error(
+            {
+              code: "9999",
+              message: "Ops... we have a problem, please try again later!",
+            },
+            res
+          );
+        }
+      }
+    }
+  },
+
+  getUserById: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+      let result = await user_model.getAccount({ hash:id });
+      if (!result) {
+        return response.notFound(
+          {
+            code: "4000",
+            message: "User not found",
+          },
+          res
+        );
+      }
+      return response.ok(result, res);
+    } catch (error) {
+      console.log(error.stack);
+      if (process.env.NODE_ENV === "development") {
+        return response.error(
+          {
+            code: "9998",
+            message: error.message,
+          },
+          res
+        );
+      } else {
+        return response.error(
+          {
+            code: "9999",
+            message: "Ops... we have a problem, please try again later!",
+          },
+          res
+        );
+      }
+    }
+  },
+
+  createUser: async (req, res, next) => {
+    try {
+      let { name, username, password } = req.body;
+
+      let checkUsername = await user_model.getAccount({ username });
+
+      if (checkUsername) {
+        // account already exist
+        return response.bad(
+          {
+            code: "4001",
+            message: "Username already exist!",
+          },
+          res
+        );
+      } else {
+        let hashed_password = await hashing.hashPass(password);
+
+        let new_account = await user_model.createAccount({
+          name,
+          username,
+          password: hashed_password,
+          is_admin: 1
+        });
+
+        return response.created(
+          {
+            code: "4003",
+            message: "Register Success!",
+            data: new_account,
+          },
+          res
+        );
+      }
+    } catch (error) {
+      console.log(error.stack);
+      if (process.env.NODE_ENV === "development") {
+        return response.error(
+          {
+            code: "9998",
+            message: error.message,
+          },
+          res
+        );
+      } else {
+        return response.error(
+          {
+            code: "9999",
+            message: "Ops... we have a problem, please try again later!",
+          },
+          res
+        );
+      }
+    }
+  },
+
+
+  updateUser: async (req, res, next) => {
+    try {
+      const { id }  = req.params;
+      let { name, username, password } = req.body;
+      let account = await user_model.getAccount({ hash:id });
+      if (!account) {
+        return response.notFound(
+          {
+            code: "4000",
+            message: "User not found",
+          },
+          res
+        );
+      }
+      let payload = {};
+      if (name) payload.name = name;
+      if (username) payload.username = username;
+      if (password) payload.password = hashing.hashPass(password);
+      let update = await user_model.updateUser({ id, ...payload});
+      if(update.length === 0){
+        return response.error(
+          {
+            code: "4006",
+            message: "User failed to update",
+          },
+          res
+        );
+      }else{
+        return response.ok(
+          {
+            code: "4004",
+            message: "User successfully updated",
+            data: update,
+          },
+          res
+        );
+      }
+    }catch(error){
+      console.log(error.stack);
+      if (process.env.NODE_ENV === "development") {
+        return response.error(
+          {
+            code: "9998",
+            message: error.message,
+          },
+          res
+        );
+      } else {
+        return response.error(
+          {
+            code: "9999",
+            message: "Ops... we have a problem, please try again later!",
+          },
+          res
+        );
+      }
+    }
+  },
+
+
+  deleteUser: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+      let account = await user_model.getAccount({ hash: id});
+      if (!account) {
+        return response.notFound(
+          {
+            code: "4000",
+            message: "User not found",
+          },
+          res
+        );
+      }
+      let data=await user_model.deleteUser({ id });
+      if(data === 0){
+        return response.error(
+          {
+            code: "4006",
+            message: "User failed to delete",
+          },
+          res
+        );
+      }else{
+        return response.ok(
+          {
+            code: "4005",
+            message: "User successfully deleted",
+          },
+          res
+        );
+      }
+    } catch (error) {
+      console.log(error.stack);
+      if (process.env.NODE_ENV === "development") {
+        return response.error(
+          {
+            code: "9998",
+            message: error.message,
+          },
+          res
+        );
+      } else {
+        return response.error(
+          {
+            code: "9999",
+            message: "Ops... we have a problem, please try again later!",
+          },
+          res
+        );
+      }  
+    }
+  },
+
+
+
 };

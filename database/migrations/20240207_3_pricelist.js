@@ -5,6 +5,7 @@
 exports.up = function(knex) {
     return knex.schema.createTableIfNotExists("pricelist",function(table){
       table.increments();
+      table.string("hash",32).notNullable();
       table.string("code",6).defaultTo(null);
       table.integer("price").defaultTo(0);
       table.integer("vehicle_year_id").unsigned().references("id").inTable("vehicle_year").notNullable();

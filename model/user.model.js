@@ -1,27 +1,87 @@
-const knex=require("../database/knex");
+const knex = require("../database/knex");
 
-module.exports={
+const query_helper = require("../helper/query_helper");
 
-    getAccount:async({id,username})=>{
-        let query=knex.select("*").from("users");
+const ObjectID = require("bson-objectid");
 
-        if(id){
-            query.where("id",id);
-        }
+module.exports = {
+  getAllUser: async ({ limit, page } = { limit: 10, page: 1 }) => {
+    try {
+      let offset = query_helper.parsePageToOffset({ page, limit });
 
-        if(username){
-            query.where("username",username);
-        }
+      let query = knex.select([
+        "users.*",
+        "users.hash as id",
+        knex.raw("md5(users.hash) as hash"),
+      ]).from("users");
 
-        return query.first();
-    },
+      query.orderBy("users.id", "asc");
 
-    createAccount:async({name,username,password})=>{
-        return knex("user").insert({name,username,password});
-    },
+      if (limit && limit != "all") {
+        query.offset(offset);
+        query.limit(limit);
+      }
+      
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
 
-    updatePassword: async ({ user_id, password }) => {
-        await knex('user').update({ password }).where({ 'id': user_id });
+      let datas = await query;
+      
+      let result = {
+        per_page: limit ? parseInt(limit) : "all",
+        last_page: limit ? Math.ceil(query_total.total / limit) : 1,
+        total_data: parseInt(query_total.total),
+        current_page: parseInt(page),
+        data: datas,
+      };
+
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  updateUser: async ({ id, name, username, password }) => {
+    return knex("users")
+      .update({ name, username, password })
+      .where({ hash:id })
+      .returning("*");
+  },
+
+  getAccount: async ({ id, username, hash }) => {
+    let query = knex.select("*").from("users");
+
+    if (id) {
+      query.where("id", id);
     }
 
+    if (username) {
+      query.where("username", username);
+    }
+
+    if (hash) {
+      query.where("hash", hash);
+    }
+
+    return query.first();
+  },
+
+  createAccount: async ({ name, username, password, is_admin }) => {
+    return knex("users")
+      .insert({ name, username, password, is_admin, hash:String(ObjectID(Date.now())) })
+      .returning("*");
+  },
+
+  updatePassword: async ({ user_id, password }) => {
+    await knex("users")
+      .update({ password })
+      .where("id","=",user_id);
+  },
+
+  deleteUser: async ({ id }) => {
+    return knex("users").where({ hash:id }).del();
+  },
+  
 };

@@ -33,10 +33,10 @@
  *               properties:
  *                 username:
  *                   type: string
- *                   example: "mugiwara"
+ *                   example: "admin"
  *                 password:
  *                   type: string
- *                   example: "123456"
+ *                   example: "admin#@!"
  *       responses:
  *         200:
  *           description: Login Account response
@@ -87,6 +87,7 @@
  *                   type: string
  *                   example: "Ops... Internal server error, please contact support" 
  *
+ * 
  * definitions:
  *   LoginResponseSuccess:
  *     type: object

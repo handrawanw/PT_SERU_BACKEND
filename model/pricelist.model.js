@@ -2,6 +2,8 @@ const knex = require("../database/knex");
 
 const query_helper = require("../helper/query_helper");
 
+const ObjectID = require("bson-objectid");
+
 module.exports = {
   
   getAllPriceList: async ({ limit, page } = { limit: 0, page: 0 }) => {
@@ -15,19 +17,16 @@ module.exports = {
         query.limit(limit);
       }
 
-      let query_total = query
-        .clone()
-        .clear("select")
-        .count("* as total")
-        .first();
-      query_total = await query_total;
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
 
       let datas = await query;
 
       let result = {
         per_page: limit ? parseInt(limit) : "all",
-        last_page: limit ? Math.ceil(query_total / limit) : 1,
-        total_data: parseInt(query_total),
+        last_page: limit ? Math.ceil(query_total.total / limit) : 1,
+        total_data: parseInt(query_total.total),
         current_page: parseInt(page),
         data: datas
       };
@@ -39,10 +38,11 @@ module.exports = {
     }
   },
 
-  createPriceList: async ({ name, brand_id}) => {
+  createPriceList: async ({ price, vehicle_year_id, vehicle_model_id }) => {
     try {
       let data = await knex("pricelist").insert({
-        name, vehicle_brand_id:brand_id
+        price, vehicle_year_id,vehicle_model_id,
+        hash:String(ObjectID(Date.now()))
       }).returning("*");
 
       return data;
@@ -52,9 +52,9 @@ module.exports = {
     }
   },
 
-  updatePriceList: async ({ id, name, brand_id }) => {
+  updatePriceList: async ({ id, price, vehicle_year_id, vehicle_model_id }) => {
     try {
-      let data = await knex("pricelist").where({ id }).update({ name, vehicle_brand_id : brand_id }).returning("code");
+      let data = await knex("pricelist").where({ id }).update({ price, vehicle_year_id, vehicle_model_id }).returning("*");
 
       return data;
     } catch (error) {
@@ -65,7 +65,7 @@ module.exports = {
 
   deletePriceList: async ({ id }) => {
     try {
-      let data = await knex("pricelist").where({ id }).del();
+      let data = await knex("pricelist").where({ id }).del().returning("*");
 
       return data;
     } catch (error) {

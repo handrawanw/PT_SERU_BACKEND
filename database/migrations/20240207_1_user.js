@@ -5,6 +5,7 @@
 exports.up = function(knex) {
   return knex.schema.createTableIfNotExists("users",function(table){
     table.increments();
+    table.string("hash",32).notNullable();
     table.text("name").defaultTo(null);
     table.string("username",64).defaultTo(null);
     table.text("password").defaultTo(null);

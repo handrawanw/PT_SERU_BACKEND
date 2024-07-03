@@ -18,8 +18,8 @@ class jwttoken {
         expiresIn = seconds;
       }
 
-      return jwt.sign(payload, secret);
-      // return jwt.sign(payload, secret, {expiresIn: expiresIn});
+      // return jwt.sign(payload, secret);
+      return jwt.sign(payload, secret, {expiresIn: expiresIn});
     }
     
     static verifytoken(token, callback) {
