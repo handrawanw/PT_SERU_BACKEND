@@ -152,8 +152,19 @@ module.exports = {
       }
 
       let data = await pricelist_model.updatePriceList({ id, ...payload });
-
-      return response.ok(data, res);
+      if(data.length==0){
+        return response.error(
+          {
+            code: "4007",
+            message: "Failed to update pricelist",
+          },
+          res
+        );
+      }else{
+        data = data ? data[0] : {};
+        return response.ok({data}, res);
+      }
+      
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
