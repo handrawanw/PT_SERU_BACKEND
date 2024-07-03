@@ -95,115 +95,37 @@ const VIEWS = `
 const SWAGGER_DOCS = `
 // [SWAGGER_DOCS].js
 
-/**
- * @swagger
- * swagger: "2.0"
- * info:
- *   title: [SWAGGER_DOCS] API
- *   description: [SWAGGER_DOCS] API for managing [SWAGGER_DOCS]
- *   version: "1.0.0"
- *
- * securityDefinitions:
- *   BearerAuth:
- *     type: apiKey
- *     name: Authorization
- *     in: header
- * 
- * tags:
- *   - name: [SWAGGER_DOCS]
- *     description: The [SWAGGER_DOCS] managing API
- *
- * paths:
- *   /[SWAGGER_DOCS]/login:
- *     post:
- *       summary: Login
- *       tags: [[SWAGGER_DOCS]]
- *       requestBody:
- *         required: true
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 username:
- *                   type: string
- *                   example: "aliansi"
- *                 password:
- *                   type: string
- *                   example: "123456"
- *       responses:
- *         200:
- *           description: Login [SWAGGER_DOCS] response
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#/definitions/Login[SWAGGER_DOCS]Response'
- *         400:
- *           description: Bad request
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   status:
- *                     type: boolean
- *                     example: false
- *                   message:
- *                     type: string
- *                     example: "You must fill all the fields"
- *         401:
- *           description: Unauthorized
- *           content:
- *            application/json:
- *             schema:
- *              type: object
- *              properties:
- *                status:
- *                  type: boolean
- *                  example: true
- *                message:
+//**
+ * @openapi
+ * /api/[SWAGGER_DOCS]:
+ *      get:
+ *          tags: [Widget]
+ *          security:
+ *              - bearerAuth: []
+ *          description: Get the list of Names with optional filter
+ *          parameters:
+ *              - in: query
+ *                name: filter
+ *                schema:
  *                  type: string
- *                  example: "Agent Unauthorized | Password doesn't match"
- *         404:
- *           description: Not found [SWAGGER_DOCS]
- *           content:
- *             application/json:
- *               schema:
- *                type: object
- *                properties:
- *                 status:
- *                  type: boolean
- *                  example: false
- *                 message:
- *                  type: string
- *                  example: "[SWAGGER_DOCS] tidak terdaftar"
- *         500:
- *           description: Internal server error
- *           content:
- *             application/json:
- *               schema:
- *                type: object
- *                properties:
- *                 status:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: "Ops... Internal server error, please contact support" 
- *
- * definitions:
- *   Login[SWAGGER_DOCS]Response:
- *     type: object
- *     properties:
- *       status:
- *         type: boolean
- *         example: true
- *       access_token:
- *         type: string
- *         example: "eyJhbsciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5IiwidXNlcm5hbWUiOiJhbGlhbmRvbmgybyIsImFnZW50X2lkIjoiZHNlLWJvcyIsImlhdCI6MTcxOTc1asYwN30.aL8yRch4rbrDH7xEHkSzW3GFV8DGtEMYxrzjw1HCGoc"
- *       token_type:
- *         type: string
- *         example: "bearer"
+ *                description: Optional filter parameter
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              additionalData:
+ *                                  type: string
+ *                                  description: Additional data in the request body
+ *          responses:
+ *               200:
+ *                    description: list of Names
+ *               500:
+ *                    description: Some Server Error
+ *               401:
+ *                    description: UnAuthorized Access. Kindly check Bearer Token
  */
 `;
 

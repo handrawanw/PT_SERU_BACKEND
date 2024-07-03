@@ -2,21 +2,18 @@
 // pricelist.js
 
 /**
- * @swagger
- * swagger: "2.0"
- * info:
- *   title: Account API
- *   description: Account API for managing Account
- *   version: "1.0.0"
- *
- * securityDefinitions:
- *   BearerAuth:
- *     type: apiKey
- *     name: Authorization
- *     in: header
- * 
- * tags:
- *   - name: Account
- *     description: The Account managing API
- *
+ * @openapi
+ * /api/v1/getname:
+ *      get:
+ *          tags: [Widget]
+ *          security:
+ *              - bearerAuth : []
+ *          description: Get the list of Names
+ *          responses:
+ *               200:
+ *                    description: list of Names
+ *               500:
+ *                    description: Some Server Error
+ *               401:
+ *                    description: UnAuthorized Access. Kindly check Bearer Token
  */
