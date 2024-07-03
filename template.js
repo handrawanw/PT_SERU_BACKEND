@@ -99,8 +99,8 @@ const SWAGGER_DOCS = `
  * @swagger
  * swagger: "2.0"
  * info:
- *   title: Account API
- *   description: Account API for managing Account
+ *   title: [SWAGGER_DOCS] API
+ *   description: [SWAGGER_DOCS] API for managing [SWAGGER_DOCS]
  *   version: "1.0.0"
  *
  * securityDefinitions:
@@ -110,14 +110,14 @@ const SWAGGER_DOCS = `
  *     in: header
  * 
  * tags:
- *   - name: Account
- *     description: The Account managing API
+ *   - name: [SWAGGER_DOCS]
+ *     description: The [SWAGGER_DOCS] managing API
  *
  * paths:
- *   /account/login:
+ *   /[SWAGGER_DOCS]/login:
  *     post:
  *       summary: Login
- *       tags: [Account]
+ *       tags: [[SWAGGER_DOCS]]
  *       requestBody:
  *         required: true
  *         content:
@@ -133,11 +133,11 @@ const SWAGGER_DOCS = `
  *                   example: "123456"
  *       responses:
  *         200:
- *           description: Login Account response
+ *           description: Login [SWAGGER_DOCS] response
  *           content:
  *             application/json:
  *               schema:
- *                 $ref: '#/definitions/LoginAccountResponse'
+ *                 $ref: '#/definitions/Login[SWAGGER_DOCS]Response'
  *         400:
  *           description: Bad request
  *           content:
@@ -165,7 +165,7 @@ const SWAGGER_DOCS = `
  *                  type: string
  *                  example: "Agent Unauthorized | Password doesn't match"
  *         404:
- *           description: Not found Account
+ *           description: Not found [SWAGGER_DOCS]
  *           content:
  *             application/json:
  *               schema:
@@ -176,7 +176,7 @@ const SWAGGER_DOCS = `
  *                  example: false
  *                 message:
  *                  type: string
- *                  example: "Account tidak terdaftar"
+ *                  example: "[SWAGGER_DOCS] tidak terdaftar"
  *         500:
  *           description: Internal server error
  *           content:
@@ -192,7 +192,7 @@ const SWAGGER_DOCS = `
  *                   example: "Ops... Internal server error, please contact support" 
  *
  * definitions:
- *   LoginAccountResponse:
+ *   Login[SWAGGER_DOCS]Response:
  *     type: object
  *     properties:
  *       status:

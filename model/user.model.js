@@ -3,7 +3,7 @@ const knex=require("../database/knex");
 module.exports={
 
     getAccount:async({id,username})=>{
-        let query=knex.select("*").from("user");
+        let query=knex.select("*").from("users");
 
         if(id){
             query.where("id",id);

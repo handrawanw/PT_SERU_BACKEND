@@ -17,10 +17,10 @@
  * 
  * tags:
  *   - name: Account
- *     description: The Account managing API
+ *     description: The Account managing APIs
  *
  * paths:
- *   /account/login:
+ *   /user/login:
  *     post:
  *       summary: Login
  *       tags: [Account]
@@ -33,7 +33,7 @@
  *               properties:
  *                 username:
  *                   type: string
- *                   example: "aliansi"
+ *                   example: "mugiwara"
  *                 password:
  *                   type: string
  *                   example: "123456"
@@ -43,7 +43,8 @@
  *           content:
  *             application/json:
  *               schema:
- *                 $ref: '#/definitions/LoginAccountResponse'
+ *                 $ref: '#/definitions/LoginResponseSuccess'
+ * 
  *         400:
  *           description: Bad request
  *           content:
@@ -51,12 +52,13 @@
  *               schema:
  *                 type: object
  *                 properties:
- *                   status:
- *                     type: boolean
- *                     example: false
+ *                   code:
+ *                     type: string
+ *                     example: "4000"
  *                   message:
  *                     type: string
- *                     example: "You must fill all the fields"
+ *                     example: "You must fill all the field"
+ * 
  *         401:
  *           description: Unauthorized
  *           content:
@@ -64,12 +66,13 @@
  *             schema:
  *              type: object
  *              properties:
- *                status:
- *                  type: boolean
- *                  example: true
+ *                code:
+ *                  type: string
+ *                  example: "4010"
  *                message:
  *                  type: string
  *                  example: "Username or Password not match! | Password and Username not match!"
+ * 
  *         500:
  *           description: Internal server error
  *           content:
@@ -77,23 +80,23 @@
  *               schema:
  *                type: object
  *                properties:
- *                 status:
- *                   type: boolean
- *                   example: false
+ *                 code:
+ *                   type: string
+ *                   example: "5000"
  *                 message:
  *                   type: string
  *                   example: "Ops... Internal server error, please contact support" 
  *
  * definitions:
- *   LoginAccountResponse:
+ *   LoginResponseSuccess:
  *     type: object
  *     properties:
- *       status:
- *         type: boolean
- *         example: true
+ *       code:
+ *         type: string
+ *         example: "2000"
  *       access_token:
  *         type: string
- *         example: "eyJhbsciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5IiwidXNlcm5hbWUiOiJhbGlhbmRvbmgybyIsImFnZW50X2lkIjoiZHNlLWJvcyIsImlhdCI6MTcxOTc1asYwN30.aL8yRch4rbrDH7xEHkSzW3GFV8DGtEMYxrzjw1HCGoc"
+ *         example: "eyJhbsciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
  *       token_type:
  *         type: string
  *         example: "bearer"

@@ -23,7 +23,7 @@ module.exports = {
       } else {
         let correct_password = await hashing.checkPass(
           password,
-          member.password
+          account.password
         );
         if (correct_password) {
           // password match
@@ -34,7 +34,7 @@ module.exports = {
 
           return response.ok(
             {
-              code: "4500",
+              code: "0000",
               message: "Login Success!",
               access_token: token,
               token_type: "bearer",

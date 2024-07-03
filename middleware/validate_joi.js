@@ -10,10 +10,8 @@ module.exports = {
                 if(list_error.length>0){
                     list_error=list_error.map((item)=>({'message':item.message,'code':'1350'}));
                 }
-                return response.bad({
-                    validate:true,
-                    error:list_error[0]
-                },res);
+                let catch_error = list_error.length>0?list_error[0]:{};
+                return response.bad(catch_error,res);
             }
             next();
         }
@@ -27,10 +25,8 @@ module.exports = {
                 if(list_error.length>0){
                     list_error=list_error.map((item)=>({'message':item.message,'code':'1350'}));
                 }
-                return response.bad({
-                    validate:true,
-                    error:list_error[0]
-                },res);
+                let catch_error = list_error.length>0?list_error[0]:{};
+                return response.bad(catch_error,res);
             }
             next();
         }
@@ -44,10 +40,8 @@ module.exports = {
                 if(list_error.length>0){
                     list_error=list_error.map((item)=>({'message':item.message,'code':'1350'}));
                 }
-                return response.bad({
-                    validate:true,
-                    error:list_error[0]
-                },res);
+                let catch_error = list_error.length>0?list_error[0]:{};
+                return response.bad(catch_error,res);
             }
             next();
         }
@@ -61,10 +55,8 @@ module.exports = {
                 if(list_error.length>0){
                     list_error=list_error.map((item)=>({'message':item.message,'code':'1350'}));
                 }
-                return response.bad({
-                    validate:true,
-                    error:list_error[0]
-                },res);
+                let catch_error = list_error.length>0?list_error[0]:{};
+                return response.bad(catch_error,res);
             }
             next();
         }
