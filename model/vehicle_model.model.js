@@ -46,6 +46,37 @@ module.exports = {
     }
   },
 
+  getVModel: async ({ limit, page } = { limit: 0, page: 0 }) => {
+    try {
+      let offset = query_helper.parsePageToOffset({page, limit});
+
+      let query = knex.select([
+        "vm.*",
+      ]).from("vehicle_model as vm");
+
+      if (limit && limit != "all") {
+        query.offset(offset);
+        query.limit(limit);
+      }
+
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
+
+      let datas = await query;
+
+      let result = {
+        total_data: parseInt(query_total.total),
+        data: datas
+      };
+
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
   getModelById: async ({ id, hash }) => {
     let query = knex.select("*").from("vehicle_model");
 
@@ -76,7 +107,7 @@ module.exports = {
 
   updateModel: async ({ id, name, type_id }) => {
     try {
-      let data = await knex("vehicle_model").where({ id }).update({ name, vehicle_type_id : type_id }).returning("*");
+      let data = await knex("vehicle_model").where({ hash:id }).update({ name, vehicle_type_id : type_id }).returning("*");
 
       return data;
     } catch (error) {
@@ -87,7 +118,7 @@ module.exports = {
 
   deleteModel: async ({ id }) => {
     try {
-      let data = await knex("vehicle_model").where({ id }).del().returning("*");
+      let data = await knex("vehicle_model").where({ hash:id }).del().returning("*");
 
       return data;
     } catch (error) {

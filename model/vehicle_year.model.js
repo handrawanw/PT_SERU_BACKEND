@@ -10,26 +10,27 @@ module.exports = {
     try {
       let offset = query_helper.parsePageToOffset({page, limit});
 
-      let query = knex("vehicle_year").select("*");
+      let query = knex.select([
+        "vy.*",
+        "vy.hash as id",
+        knex.raw("md5(vy.hash) as hash")
+      ]).from("vehicle_year as vy");
 
       if (limit && limit != "all") {
         query.offset(offset);
         query.limit(limit);
       }
 
-      let query_total = query
-        .clone()
-        .clear("select")
-        .count("* as total")
-        .first();
-      query_total = await query_total;
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
 
       let datas = await query;
 
       let result = {
         per_page: limit ? parseInt(limit) : "all",
-        last_page: limit ? Math.ceil(query_total / limit) : 1,
-        total_data: parseInt(query_total),
+        last_page: limit ? Math.ceil(query_total.total / limit) : 1,
+        total_data: parseInt(query_total.total),
         current_page: parseInt(page),
         data: datas
       };

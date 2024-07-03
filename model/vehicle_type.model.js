@@ -75,6 +75,20 @@ module.exports = {
     }
   },
 
+  getTypeById: async ({ id, hash }) => {
+    let query = knex.select("*").from("vehicle_type");
+
+    if (id) {
+      query.where("id", id);
+    }
+
+    if(hash){
+      query.where("hash",hash);
+    }
+
+    return query.first();
+  },
+
   createType: async ({ name, brand_id}) => {
     try {
       let data = await knex("vehicle_type").insert({

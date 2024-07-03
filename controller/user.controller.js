@@ -233,8 +233,8 @@ module.exports = {
   getAllUser: async (req, res, next) => {
     try {
       let { page, limit } = req.query;
-      let result = await user_model.getAllUser({ page, limit });
-      return response.ok(result, res);
+      let data = await user_model.getAllUser({ page, limit });
+      return response.ok(data, res);
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {

@@ -7,6 +7,7 @@ const auth=require("../middleware/auth.js");
 const schemas=require("../schemas/vehicle_model.validate.js");
 const validate=require("../middleware/validate_joi.js");
 
+router.get("/get",auth.authjwt,controller.getVModel);
 router.get("/",auth.authjwt,validate.query(schemas.getAllModel),controller.getAllModel);
 router.get("/:id",auth.authjwt,controller.getModelById);
 router.post("/create",auth.authjwt,validate.body(schemas.createModel),controller.createModel);

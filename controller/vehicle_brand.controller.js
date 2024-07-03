@@ -66,14 +66,23 @@ module.exports = {
     try {
       let { name } = req.body;
       let data = await vehicle_brand_model.createBrand({ name });
-      data = data ? data[0] : {};
-
-      return response.ok(
-        {
-          data,
-        },
-        res
-      );
+      if (data.length == 0) {
+        return response.error(
+          {
+            code: "4046",
+            message: "Data not found",
+          },
+          res
+        );
+      } else {
+        data = data ? data[0] : {};
+        return response.ok(
+          {
+            data,
+          },
+          res
+        );
+      }
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
@@ -99,9 +108,9 @@ module.exports = {
   getBrandById: async (req, res, next) => {
     try {
       let { id } = req.params;
-      let data = await vehicle_brand_model.getBrandById({ hash:id });
+      let data = await vehicle_brand_model.getBrandById({ hash: id });
 
-      if(!data){
+      if (!data) {
         return response.notFound(
           {
             code: "404",
@@ -109,7 +118,7 @@ module.exports = {
           },
           res
         );
-      }else{
+      } else {
         data = data ? data : {};
         return response.ok(
           {
@@ -118,7 +127,6 @@ module.exports = {
           res
         );
       }
-
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
@@ -146,14 +154,24 @@ module.exports = {
       let { id } = req.params;
       let { name } = req.body;
       let data = await vehicle_brand_model.updateBrand({ id, name });
-      data = data ? data[0] : {};
+      if (data.length == 0) {
+        return response.error(
+          {
+            code: "4046",
+            message: "Data not found",
+          },
+          res
+        );
+      } else {
+        data = data ? data[0] : {};
 
-      return response.ok(
-        {
-          data,
-        },
-        res
-      );
+        return response.ok(
+          {
+            data,
+          },
+          res
+        );
+      }
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
@@ -180,14 +198,23 @@ module.exports = {
     try {
       let { id } = req.params;
       let data = await vehicle_brand_model.deleteBrand({ id });
-      data = data ? data[0] : {};
-
-      return response.ok(
-        {
-          data,
-        },
-        res
-      );
+      if (data.length == 0) {
+        return response.error(
+          {
+            code: "4046",
+            message: "Data not found",
+          },
+          res
+        );
+      } else {
+        data = data ? data[0] : {};
+        return response.ok(
+          {
+            data,
+          },
+          res
+        );
+      }
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {

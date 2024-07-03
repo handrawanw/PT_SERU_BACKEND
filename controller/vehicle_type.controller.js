@@ -63,14 +63,51 @@ module.exports = {
     }
   },
 
+  getTypeById: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+      let data = await vehicle_type_model.getTypeById({ hash: id});
+      if(data){
+        return response.ok({data}, res);
+      }else{
+        return response.error(
+          {
+            code: "4046",
+            message: "Data not found",
+          },
+          res
+        );
+      }
+    } catch (error) {
+      console.log(error.stack);
+      if (process.env.NODE_ENV === "development") {
+        return response.error(
+          {
+            code: "9998",
+            message: error.message,
+          },
+          res
+        );
+      } else {
+        return response.error(
+          {
+            code: "9999",
+            message: "Ops... we have a problem, please try again later!",
+          },
+          res
+        );
+      }
+    }
+  },
+
   createType: async (req, res, next) => {
     try {
       let { name, brand_id } = req.body;
-      let brand = await vehicle_type_model.getBrandById({ id: brand_id });
+      let brand = await vehicle_brand_model.getBrandById({ id: brand_id });
       if(brand){
         let data = await vehicle_type_model.createType({ name, brand_id });
         data = data ? data[0] : {};
-        return response.ok(data, res);
+        return response.ok({data}, res);
       }else{
         return response.error(
           {
@@ -134,7 +171,7 @@ module.exports = {
           );
         }else{
           data = data ? data[0] : {};
-          return response.ok(data, res);
+          return response.ok({data}, res);
         }
       }
 
@@ -174,7 +211,7 @@ module.exports = {
         );
       }else{
         data = data ? data[0] : {};
-        return response.ok(data, res);
+        return response.ok({data}, res);
       }
     } catch (error) {
       console.log(error.stack);

@@ -39,7 +39,7 @@ module.exports = {
       let { price, vehicle_year_id, vehicle_model_id } = req.body;
 
       let codePL = await pricelist_model.codePL();
-
+      console.log(codePL, "codePL");
       let checkVehicleYear = await vehicle_year_model.getYearById({
         id: vehicle_year_id,
       });
@@ -75,7 +75,18 @@ module.exports = {
         vehicle_model_id,
       });
 
-      return response.ok(data, res);
+      if(data.length==0){
+        return response.error(
+          {
+            code: "4006",
+            message: "Failed to create pricelist",
+          },
+          res
+        );
+      }else{
+        data = data ? data[0] : {};
+        return response.ok({data}, res);
+      }
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {

@@ -67,7 +67,18 @@ module.exports = {
       let { year } = req.body;
       let data = await vehicle_year_model.createVYear({ year });
 
-      return response.ok(data, res);
+      if(data.length === 0){
+        return response.error(
+          {
+            code: "4044",
+            message: "Data not found!",
+          },
+          res
+        );
+      }else{
+        data = data ? data[0] : {};
+        return response.ok({data}, res);
+      }
     } catch (error) {
       console.log(error.stack);
       if (process.env.NODE_ENV === "development") {
@@ -106,7 +117,7 @@ module.exports = {
         );
       }else{
         data = data ? data[0] : {};
-        return response.ok(data, res);
+        return response.ok({data}, res);
       }
     } catch (error) {
       console.log(error.stack);
@@ -145,7 +156,7 @@ module.exports = {
         );
       }else{
         data = data ? data[0] : {};
-        return response.ok(data, res);
+        return response.ok({data}, res);
       }
 
     } catch (error) {
