@@ -50,6 +50,20 @@ module.exports = {
     }
   },
 
+  getPriceListById: async ({ id, hash }) => {
+    let query = knex.select("*").from("pricelist");
+
+    if (id) {
+      query.where("id", id);
+    }
+
+    if(hash){
+      query.where("hash",hash);
+    }
+
+    return query.first();
+  },
+
   createPriceList: async ({ code, price, vehicle_year_id, vehicle_model_id }) => {
     try {
       let data = await knex("pricelist").insert({

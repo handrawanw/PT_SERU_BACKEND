@@ -18,4 +18,7 @@ module.exports = {
     deletePriceList: Joi.object({
         id: Joi.number().required(),
     }),
+    getPriceListById: Joi.object({
+        id: Joi.string().required(),
+    }),
 }
