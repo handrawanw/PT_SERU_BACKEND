@@ -91,51 +91,13 @@ app.use((req,res,next)=>{
   next();
 });
 
-const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require('./swagger.json');
 
-const options = {
-  definition: {
-    openapi: "3.1.0",
-    info: {
-      title: "Express API with Swagger",
-      version: "0.1.0",
-      description:
-        "This is API documentation created with Express and documented with Swagger",
-      license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html",
-      },
-    },
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          in: 'header',
-          name: 'Authorization',
-          description: 'Bearer token to access these api endpoints',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-    },
-    security: [
-      {
-        bearerAuth: [],
-        agentAuth: [],
-      },
-    ],
-    servers: [
-      {
-        url: "http://localhost:8000",
-        description: "Development server",
-      },
-    ],
-  },
-  apis: ["./routes/*.swagger.js"],
+var options = {
+  explorer: true
 };
 
-const specs = swaggerJsdoc(options);
 const basicAuth = require("express-basic-auth");
 app.use(
   "/api-docs",
@@ -146,13 +108,7 @@ app.use(
     challenge: true,
   }),
   swaggerUi.serve,
-  swaggerUi.setup(specs, {
-    explorer: true,
-    swaggerOptions: {
-      docExpansion: "none",
-      showRequestHeaders: true,
-    },
-  })
+  swaggerUi.setup(swaggerDocument,options)
 );
 
 app.use("/",require("./routes/index"));
