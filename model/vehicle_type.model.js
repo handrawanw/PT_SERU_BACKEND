@@ -18,15 +18,16 @@ module.exports = {
       ]).
       from("vehicle_type as vt")
 
+      
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
+    
       if (limit && limit != "all") {
         query.offset(offset);
         query.limit(limit);
       }
-
-      let query_total = await knex(query.as("wd"))
-      .count("* as total")
-      .first();
-
+      
       let datas = await query;
 
       let result = {
@@ -52,14 +53,15 @@ module.exports = {
         "vt.*",
       ]).from("vehicle_type as vt");
 
+      
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
+      
       if (limit && limit != "all") {
         query.offset(offset);
         query.limit(limit);
       }
-
-      let query_total = await knex(query.as("wd"))
-      .count("* as total")
-      .first();
 
       let datas = await query;
 

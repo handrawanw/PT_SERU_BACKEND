@@ -24,14 +24,15 @@ module.exports = {
       query.leftJoin("vehicle_year as vy", "pl.vehicle_year_id", "vy.id");
       query.leftJoin("vehicle_model as vm", "pl.vehicle_model_id", "vm.id");
 
+      
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
+    
       if (limit && limit != "all") {
         query.offset(offset);
         query.limit(limit);
       }
-
-      let query_total = await knex(query.as("wd"))
-      .count("* as total")
-      .first();
 
       let datas = await query;
 

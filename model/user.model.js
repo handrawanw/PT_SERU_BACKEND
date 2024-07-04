@@ -16,21 +16,21 @@ module.exports = {
       ]).from("users");
 
       query.orderBy("users.id", "asc");
-
-      if (limit && limit != "all") {
-        query.offset(offset);
-        query.limit(limit);
-      }
       
       let query_total = await knex(query.as("wd"))
       .count("* as total")
       .first();
+   
+      if (limit && limit != "all") {
+        query.offset(offset);
+        query.limit(limit);
+      }
 
       let datas = await query;
-      
+
       let result = {
         per_page: limit ? parseInt(limit) : "all",
-        last_page: limit ? Math.ceil(query_total.total / limit) : 1,
+        last_page: limit ? Math.ceil(query_total.total/limit) : 1,
         total_data: parseInt(query_total.total),
         current_page: parseInt(page),
         data: datas,

@@ -16,14 +16,15 @@ module.exports = {
         knex.raw("md5(vy.hash) as hash")
       ]).from("vehicle_year as vy");
 
+      
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
+     
       if (limit && limit != "all") {
         query.offset(offset);
         query.limit(limit);
       }
-
-      let query_total = await knex(query.as("wd"))
-      .count("* as total")
-      .first();
 
       let datas = await query;
 
@@ -64,14 +65,15 @@ module.exports = {
         "vy.*",
       ]).from("vehicle_year as vy");
 
+      
+      let query_total = await knex(query.as("wd"))
+      .count("* as total")
+      .first();
+     
       if (limit && limit != "all") {
         query.offset(offset);
         query.limit(limit);
       }
-
-      let query_total = await knex(query.as("wd"))
-      .count("* as total")
-      .first();
 
       let datas = await query;
 
