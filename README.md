@@ -14,6 +14,12 @@
   pnpm knex:migrate:latest
 ```
 
+- Run migration to rollback tables (directory: db/migrations)
+
+```bash
+  pnpm knex:migrate:rollback
+```
+
 - Run migration to setup data (directory: db/seeds)
 
 ```bash
@@ -47,3 +53,6 @@ npm install -g pnpm
 ## Style Code
 - penulisan variabel, file .js dan folder menggunakan gaya snake_case
 - penulisan nama fungsi menggunakan gaya camelCase
+
+## Author
+### Handrawan - Nodejs Developer
