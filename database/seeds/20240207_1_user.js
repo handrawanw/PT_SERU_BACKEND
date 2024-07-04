@@ -13,16 +13,18 @@ exports.seed = async function(knex) {
     await knex('users').insert([
       {
         id:1,
-        name:"superadmin",
+        hash:"6685fc3b181615ec58000000",
+        name:"admin",
         username:"admin",
         is_admin:1,
         password:hashing.hashPass("admin#@!")
       },
       {
         id:2,
+        hash:"6685fc51994db01596000000",
         name:"Handrawan",
         username:"handrawan",
-        is_admin:1,
+        is_admin:0,
         password:hashing.hashPass("admin#@!")
       }
     ]);
