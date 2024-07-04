@@ -82,14 +82,14 @@ try {
       // );
   
       // create swagger
-      fs.writeFile(
-        path.join(dir_swagger, `${modul_name}.swagger.js`),
-        SWAGGER_DOCS,
-        function (err) {
-          if (err) throw err;
-          console.log("Created ", path.join(dir_swagger, `${modul_name}.swagger.js`));
-        }
-      );
+      // fs.writeFile(
+      //   path.join(dir_swagger, `${modul_name}.swagger.js`),
+      //   SWAGGER_DOCS,
+      //   function (err) {
+      //     if (err) throw err;
+      //     console.log("Created ", path.join(dir_swagger, `${modul_name}.swagger.js`));
+      //   }
+      // );
       
     } else if (make_module.toLowerCase() === "remove:module") {
       // remove module resources

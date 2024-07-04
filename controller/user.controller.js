@@ -83,7 +83,7 @@ module.exports = {
 
       if (checkUsername) {
         // account already exist
-        return response.bad(
+        return response.duplicated(
           {
             code: "4001",
             message: "Username already exist!",
